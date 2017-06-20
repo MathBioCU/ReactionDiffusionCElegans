@@ -131,7 +131,8 @@ M1 = mesh(x, h)
 M2 = mesh(y, h)
 
 # Plot the five cylindrical surfaces on the same plot for comparison
-pdf('Output/Modes/modesOnCylindricalSurface.pdf',height=5,width=7)
+tiff('Output/Modes/modesOnCylindricalSurface.tif',width = 35, height = 30, units = "mm", res = 1200)
+par(mar=c(0,0,0,0))
 offset = c(.3,.15,0,-.15,-.3)
 for (m in 1:modes) {
   if (m==1) {add = F} else {add = T}

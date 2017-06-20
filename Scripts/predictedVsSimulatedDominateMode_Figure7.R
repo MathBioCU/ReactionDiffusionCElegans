@@ -66,39 +66,44 @@ simulatedModes1a = read.csv('Output/Simulation/dominateModes_7821.csv')
 simulatedModes1b = read.csv('Output/Simulation/dominateModes_7821_extraTime.csv')
 simulatedModes1 = merge(simulatedModes1a,simulatedModes1b,by=c('d','gamma'),all.x=T)
 simulatedModes1[is.na(simulatedModes1$mode.y),]$mode.y=simulatedModes1[is.na(simulatedModes1$mode.y),]$mode.x
-simulatedModes1$n = as.factor(simulatedModes1$mode.y)
+simulatedModes1$Simulations = as.factor(simulatedModes1$mode.y)
+df[["Linear Model"]] = as.factor(df$n)
+df[df[["Linear Model"]]==0,][["Linear Model"]]=NA
 #Plot predicted and simulate modes zoomed in plot
 p1 <- ggplot(data=df) +
   geom_contour(col='black',aes(d, gamma, z = n),binwidth=1) +
-  geom_point(data=simulatedModes1,aes(d,gamma,color=n,shape=n),size=2) +
-  annotate("text",x=c(9.75,9.75),
-           
-           y=c(28.5,33.5),
-           label=c(1,2),size=10) +
+  geom_tile(aes(d, gamma, fill=`Linear Model`,alpha=`Linear Model`))+#,binwidth=1) +
+  geom_point(data=simulatedModes1,aes(d,gamma,color=Simulations,shape=Simulations),size=2) +
+  scale_alpha_manual(values=c(.05,.2))+
+  #annotate("text",x=c(9.75,9.75),
+  #         
+  #         y=c(28.5,33.5),
+  #         label=c(1,2),size=10) +
   scale_x_continuous(limits=c(2,10)) +
   scale_y_continuous(limits=c(26,34))+
   ylab(expression(gamma))+
   theme_bw(base_size=22)
 p1
-ggsave('Output/Simulation/dominateModePredictionZoomed_Gaussian7821.pdf',height=5,width=7)
+ggsave('Output/Simulation/dominateModePredictionZoomed_Gaussian7821.pdf',height=5,width=8)
 
 # Gaussian simulation (seed 2381)
 simulatedModes2a = read.csv('Output/Simulation/dominateModes_2381.csv')
 simulatedModes2b = read.csv('Output/Simulation/dominateModes_2381_extraTime.csv')
 simulatedModes2 = merge(simulatedModes2a,simulatedModes2b,by=c('d','gamma'),all.x=T)
 simulatedModes2[is.na(simulatedModes2$mode.y),]$mode.y=simulatedModes2[is.na(simulatedModes2$mode.y),]$mode.x
-simulatedModes2$n = as.factor(simulatedModes2$mode.y)
+simulatedModes2$Simulations = as.factor(simulatedModes2$mode.y)
 #Plot predicted and simulate modes zoomed in plot
 p2 <- ggplot(data=df) +
   geom_contour(col='black',aes(d, gamma, z = n),binwidth=1) +
-  geom_point(data=simulatedModes2,aes(d,gamma,color=n,shape=n),size=2) +
-  annotate("text",x=c(9.75,9.75),
-           
-           y=c(28.5,33.5),
-           label=c(1,2),size=10) +
+  geom_tile(aes(d, gamma, fill=`Linear Model`,alpha=`Linear Model`))+#,binwidth=1) +
+  geom_point(data=simulatedModes2,aes(d,gamma,color=Simulations,shape=Simulations),size=2) +
+  #annotate("text",x=c(9.75,9.75),
+  #         y=c(28.5,33.5),
+  #         label=c(1,2),size=10) +
+  scale_alpha_manual(values=c(.05,.2))+
   scale_x_continuous(limits=c(2,10)) +
   scale_y_continuous(limits=c(26,34))+
   ylab(expression(gamma))+
   theme_bw(base_size=22)
 p2
-ggsave('Output/Simulation/dominateModePredictionZoomed_Gaussian2381.pdf',height=5,width=7)
+ggsave('Output/Simulation/dominateModePredictionZoomed_Gaussian2381.pdf',height=5,width=8)

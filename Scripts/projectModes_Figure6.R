@@ -137,7 +137,11 @@ EC_cluster = kmeans(EC_data[,1:9],2,nstart=40)
 km.boot = clusterboot(EC_data[,1:9], B=100, bootmethod="boot",
                     clustermethod=kmeansCBI,
                     krange=2,seed=992)
-
+km.boot #JACCARD SIMILARITY SCORES: 0.92 and 0.89
+km.boot2 = clusterboot(EC_data[,1:9], B=100, bootmethod="boot",
+                      clustermethod=kmeansCBI,
+                      krange=3,seed=992)
+km.boot2 #JACCARD SIMILARITY SCORES: 0.51, 0.79 and 0.60
 
 # Look for correlation between clusters and total HSP levels --------------
 
@@ -209,11 +213,11 @@ dataPlot[dataPlot$clust==2,]$Cluster='A'
 
 #Plot results
 ggplot(data=dataPlot) +
-  geom_line(aes(x=position,y=value,fill=as.factor(worm),color=Cluster),linetype=5) +
-  geom_line(data=data.frame(x=x1,y=y1),aes(x,y,color="B"),linetype=2,size=2) +
-  geom_line(data=data.frame(x=x1,y=y1b),aes(x,y,color="B"),size=2) +
-  geom_line(data=data.frame(x=x1,y=y2),aes(x,y,color="A"),linetype=2,size=2) +
-  geom_line(data=data.frame(x=x1,y=y2b),aes(x,y,color="A"),size=2) +
+  geom_line(aes(x=position,y=value,fill=as.factor(worm),color=Cluster,linetype=Cluster)) +
+  #geom_line(data=data.frame(x=x1,y=y1),aes(x,y,color="B"),linetype=2,size=2) +
+  geom_line(data=data.frame(x=x1,y=y1b),aes(x,y,color="B",linetype="B"),size=2) +
+  #geom_line(data=data.frame(x=x1,y=y2),aes(x,y,color="A"),linetype=2,size=2) +
+  geom_line(data=data.frame(x=x1,y=y2b),aes(x,y,color="A",linetype="A"),size=2) +
   theme_bw() +
   theme(legend.position=c(.6,.8))+#,text=element_text(size=30)) +
   scale_x_continuous(breaks=1:9) +
@@ -240,10 +244,10 @@ meandf[meandf$clust==1,]$Cluster='B'
 
 #Plot results
 ggplot(data=dataPlot) +
-  geom_errorbar(data=meandf,aes(ring,ymin=hsp-se,ymax=hsp+se,color=Cluster),width=.5,size=1) +
-  geom_point(data=meandf,aes(ring,hsp,color=Cluster),size=2) +
-  geom_line(data=data.frame(x=x1,y=y1b),aes(x,y,color="B"),size=2) +
-  geom_line(data=data.frame(x=x1,y=y2b),aes(x,y,color="A"),size=2) +
+  geom_errorbar(data=meandf,aes(ring,ymin=hsp-se,ymax=hsp+se,color=Cluster,linetype=Cluster),linetype=1,width=.5,size=1) +
+  geom_point(data=meandf,aes(ring,hsp,color=Cluster,shape=Cluster),size=2) +
+  geom_line(data=data.frame(x=x1,y=y1b),aes(x,y,color="B",linetype="B"),size=2) +
+  geom_line(data=data.frame(x=x1,y=y2b),aes(x,y,color="A",linetype="A"),size=2) +
   theme_bw() +
   theme(legend.position=c(.6,.8)) +#,text=element_text(size=30)) +
   scale_x_continuous(breaks=1:9) +
